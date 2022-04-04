@@ -188,8 +188,9 @@ func (s *SpecSchedule) Prev(t time.Time) time.Time {
 		t = t.In(s.Location)
 	}
 
-	// Start at the previous second
-	t = t.Add(-1*time.Second - time.Duration(t.Nanosecond())*time.Nanosecond)
+	// Trim nanosecond
+	// (Seconds match include `Prev`)
+	t = t.Add(-time.Duration(t.Nanosecond())*time.Nanosecond)
 
 	// If no time is found within five years, return zero.
 	yearLimit := t.Year() - 5
